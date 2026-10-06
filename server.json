@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.evictionsapi/evictions-api",
+  "title": "Evictions API",
+  "description": "US/DC eviction cases. A licensed attorney reviews each real case before anything is served or filed.",
+  "version": "1.0.0",
+  "websiteUrl": "https://evictionsapi.com",
+  "repository": {
+    "url": "https://github.com/evictionsapi/evictions-api",
+    "source": "github",
+    "id": "1406871532"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://evictionsapi.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Optional. Bearer eak_test_... or eak_live_... for case tools. Description tools work without a key.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
