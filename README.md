@@ -15,11 +15,11 @@ This repository holds the OpenAPI document, copy-and-paste examples, and MCP cli
 
 ## Fees (real cases)
 
-Platform fee: **$29** when a case starts at the notice stage; **$99** in total through filing (the $29 is credited). A case that starts at filing pays $99 once. The attorney’s legal fee and court and service costs are separate: they are quoted before any work begins and you approve them first. The legal fee is paid to the attorney. The API and test mode are free.
+The platform fee is $29 when a case starts at the notice, and $70 more if it goes on to filing. A case that starts at filing, because you already served the notice, pays $99 once. Where the [pricing page](https://evictionsapi.com/pricing) lists a flat fee, the attorney’s legal fee for an uncontested case is that flat fee; elsewhere, and for contested work, it is quoted to you first. Court and service costs are separate, and you approve the attorney’s fee and these costs before any work begins. The attorney’s legal fee is paid to the attorney, and none of it goes to Evictions API. The API and test keys are free.
 
 If no attorney is engaged within 5 business days of submission, the platform fee is refunded in full. We do not promise outcomes or how long a case takes.
 
-## Quickstart (test mode, fictional state ZZ)
+## Quickstart (test key, fictional state ZZ)
 
 1. Sign up and copy a free test key (`eak_test_…`): https://evictionsapi.com/signup?next=/app/get-started
 2. Set environment variables:
@@ -33,12 +33,12 @@ export EVICTIONS_API_KEY=eak_test_...
 
 | Language | Path | Needs key? | Tested here |
 |---|---|---|---|
-| curl | [`examples/curl/quickstart.sh`](examples/curl/quickstart.sh) | Yes | **Untested** (needs your key) |
-| Node | [`examples/node/quickstart.mjs`](examples/node/quickstart.mjs) | Yes | **Untested** (needs your key) |
-| Python | [`examples/python/quickstart.py`](examples/python/quickstart.py) | Yes | **Untested** (needs your key) |
-| Public smoke | [`examples/curl/public-smoke.sh`](examples/curl/public-smoke.sh) | No | **Tested 2026-10-06** against the live API |
+| curl | [`examples/curl/quickstart.sh`](examples/curl/quickstart.sh) | Yes | **Tested 2026-10-14** against the live API with a test key |
+| Node | [`examples/node/quickstart.mjs`](examples/node/quickstart.mjs) | Yes | **Tested 2026-10-14** against the live API with a test key |
+| Python | [`examples/python/quickstart.py`](examples/python/quickstart.py) | Yes | **Tested 2026-10-14** against the live API with a test key |
+| Public smoke | [`examples/curl/public-smoke.sh`](examples/curl/public-smoke.sh) | No | **Tested 2026-10-14** against the live API |
 
-Test mode uses the fictional state **ZZ**. Nothing is served or filed, and nothing reaches a real tenant, attorney, or court. In test mode a built-in sandbox reviewer and adapters move the case; call `POST /v1/cases/{id}/advance` until the state is `closed`.
+Test keys are a developer feature for building and testing an integration: a test key works only with the fictional test state **ZZ**, and nothing real is served or filed or reaches a tenant, attorney, or court. With a test key, call `POST /v1/cases/{id}/advance` to move the case through its steps until its state is `closed`.
 
 Live mode uses a real property state. After you submit, we engage a licensed attorney in that state for the case. Nothing is served or filed until that attorney has reviewed it. Live keys are created only by an organization owner, signed in on the site.
 
@@ -46,24 +46,31 @@ Live mode uses a real property state. After you submit, we engage a licensed att
 
 MCP server (Streamable HTTP): `https://evictionsapi.com/mcp`  
 Discovery: https://evictionsapi.com/.well-known/mcp.json  
-Full guide: https://evictionsapi.com/docs/agents
+Full guide, with every tool: https://evictionsapi.com/docs/agents ([Markdown](https://evictionsapi.com/docs/agents.md))
 
-Tools that describe the service, pricing, and each state need no key. Tools that work with cases need `Authorization: Bearer eak_…`.
+The tools that describe the service, pricing and each state need no key. The tools that work with cases need the person’s account: in Claude and ChatGPT the person signs in when the client asks; other clients send `Authorization: Bearer eak_…`. Signing in gives the app the same access as an API key in the mode chosen (a live key for an owner’s real cases, or a test key for developer testing); it is revoked on the API keys page.
 
-### Claude Desktop / Claude web
+### Claude (web and desktop)
 
-Customize → Connectors → Add custom connector → URL `https://evictionsapi.com/mcp`. For case tools, add header `Authorization` = `Bearer eak_test_...`.
+1. Open Customize, then Connectors (Team or Enterprise: Organization settings, then Connectors).
+2. Add custom connector, paste `https://evictionsapi.com/mcp`. Under Authentication choose **Sign in when needed**, even if Claude suggests No sign-in, and keep the recommended OAuth client.
+3. The first time Claude uses a tool that works with cases, it asks you to connect: sign in to Evictions API and approve.
 
 ### Claude Code
 
 ```bash
-claude mcp add --transport http evictions-api https://evictionsapi.com/mcp \
-  --header "Authorization: Bearer eak_test_..."
+claude mcp add --transport http evictions-api https://evictionsapi.com/mcp
 ```
+
+Then run `/mcp` inside Claude Code, choose `evictions-api` and sign in when it asks. To use a key instead, add `--header "Authorization: Bearer eak_test_..."`.
+
+### ChatGPT
+
+Turn on Developer mode in settings (paid plans), create an app for an MCP server with `https://evictionsapi.com/mcp`, choose OAuth, then sign in to Evictions API and approve.
 
 ### Cursor
 
-Put this in `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (all projects). Do not commit a real key.
+Put this in `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (all projects). Leave `headers` out to use only the tools that need no key, and do not commit a real key.
 
 ```json
 {
@@ -78,13 +85,13 @@ Put this in `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (all projects).
 }
 ```
 
-### VS Code / other Streamable HTTP clients
+### VS Code and other Streamable HTTP clients
 
-See https://evictionsapi.com/docs/agents for VS Code `mcp.json`, ChatGPT (no-key tools only), and the tool list.
+See https://evictionsapi.com/docs/agents for VS Code `mcp.json` and the full tool list.
 
 ## OpenAPI
 
-[`openapi.json`](openapi.json) was fetched from https://api.evictionsapi.com/v1/openapi.json on 2026-10-06 (OpenAPI 3.1, no key required). Prefer the live URL so you stay current.
+[`openapi.json`](openapi.json) was fetched from https://api.evictionsapi.com/v1/openapi.json on 2026-10-14 (OpenAPI 3.1, no key required). Prefer the live URL so you stay current.
 
 ## License
 

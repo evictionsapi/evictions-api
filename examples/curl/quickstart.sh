@@ -63,7 +63,7 @@ curl -sS -f -X POST "$BASE/v1/cases/$CASE/validate" -H "$AUTH" | python3 -m json
 echo "== submit =="
 curl -sS -f -X POST "$BASE/v1/cases/$CASE/submit" -H "$AUTH" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("state"), d.get("nextAction"))'
 
-echo "== advance until closed (test mode) =="
+echo "== advance until closed (test key) =="
 for i in $(seq 1 40); do
   RESP=$(curl -sS -X POST "$BASE/v1/cases/$CASE/advance" -H "$AUTH")
   STATE=$(printf '%s' "$RESP" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("state") or d.get("error",{}).get("code") or "?")' 2>/dev/null || echo "?")
