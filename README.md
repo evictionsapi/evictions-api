@@ -33,10 +33,10 @@ export EVICTIONS_API_KEY=eak_test_...
 
 | Language | Path | Needs key? | Tested here |
 |---|---|---|---|
-| curl | [`examples/curl/quickstart.sh`](examples/curl/quickstart.sh) | Yes | **Tested 2026-10-14** against the live API with a test key |
-| Node | [`examples/node/quickstart.mjs`](examples/node/quickstart.mjs) | Yes | **Tested 2026-10-14** against the live API with a test key |
-| Python | [`examples/python/quickstart.py`](examples/python/quickstart.py) | Yes | **Tested 2026-10-14** against the live API with a test key |
-| Public smoke | [`examples/curl/public-smoke.sh`](examples/curl/public-smoke.sh) | No | **Tested 2026-10-14** against the live API |
+| curl | [`examples/curl/quickstart.sh`](examples/curl/quickstart.sh) | Yes | **Tested 2026-11-10** against the live API with a test key |
+| Node | [`examples/node/quickstart.mjs`](examples/node/quickstart.mjs) | Yes | **Tested 2026-11-10** against the live API with a test key |
+| Python | [`examples/python/quickstart.py`](examples/python/quickstart.py) | Yes | **Tested 2026-11-10** against the live API with a test key |
+| Public smoke | [`examples/curl/public-smoke.sh`](examples/curl/public-smoke.sh) | No | **Tested 2026-11-10** against the live API |
 
 Test keys are a developer feature for building and testing an integration: a test key works only with the fictional test state **ZZ**, and nothing real is served or filed or reaches a tenant, attorney, or court. With a test key, call `POST /v1/cases/{id}/advance` to move the case through its steps until its state is `closed`.
 
@@ -91,7 +91,7 @@ See https://evictionsapi.com/docs/agents for VS Code `mcp.json` and the full too
 
 ## OpenAPI
 
-[`openapi.json`](openapi.json) was fetched from https://api.evictionsapi.com/v1/openapi.json on 2026-10-14 (OpenAPI 3.1, no key required). Prefer the live URL so you stay current.
+[`openapi.json`](openapi.json) was fetched from https://api.evictionsapi.com/v1/openapi.json on 2026-11-10 (OpenAPI 3.1, no key required). Prefer the live URL so you stay current.
 
 ## License
 
